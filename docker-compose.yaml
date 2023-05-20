@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  backend:
+    container_name: backend
+    volumes:
+      - ./backend:/backend
+    build:
+      context: "backend/"
+      dockerfile: Dockerfile
+      target: runner
+    ports:
+      - 3000:3000
+  frontend:
+    container_name: frontend
+    volumes:
+      - ./frontend:/frontend
+    build:
+      context: "frontend/"
+      dockerfile: Dockerfile
+      target: runner
+    ports:
+      - 4000:4000
