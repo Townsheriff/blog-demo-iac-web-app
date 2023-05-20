@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"]
+}
