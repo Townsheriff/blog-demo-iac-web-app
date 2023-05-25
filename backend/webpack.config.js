@@ -11,13 +11,14 @@ module.exports = (_, args) => {
 
 const createProductionConfig = () => {
   return {
-    entry: "./src/index.ts",
+    entry: "./src/lambda.ts",
     target: "node",
     resolve: {
       extensions: [".ts", ".mjs", ".js"],
     },
     output: {
       filename: "bundle.js",
+      libraryTarget: "commonjs",
       path: path.resolve(__dirname, "build"),
     },
     module: {
@@ -36,7 +37,7 @@ const createProductionConfig = () => {
 
 const createDevelopmentConfig = () => {
   return {
-    entry: "./src/index.ts",
+    entry: "./src/main.ts",
     devtool: "inline-source-map",
     target: "node",
     watch: true,
