@@ -61,6 +61,40 @@ export class AppCdn extends Construct {
       }
     );
 
+    const invalidateCommand = {
+      action: "createInvalidation",
+      service: "CloudFront",
+
+      parameters: {
+        DistributionId: distribution.distributionId,
+        InvalidationBatch: {
+          CallerReference: `${Date.now()}`,
+          Paths: {
+            Quantity: 1,
+            Items: ["/*"],
+          },
+        },
+      },
+    };
+
+    const invalidateCache = new cdk.custom_resources.AwsCustomResource(
+      this,
+      "Invalidation",
+      {
+        role: new cdk.aws_iam.Role(this, "InvalidationRole", {
+          assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        }),
+        onCreate: {
+          ...invalidateCommand,
+          physicalResourceId:
+            cdk.custom_resources.PhysicalResourceId.of("InvalidateCache"),
+        },
+        onUpdate: invalidateCommand,
+      }
+    );
+
+    distribution.grantCreateInvalidation(invalidateCache);
+
     new cdk.aws_route53.ARecord(this, "ApiAliasARecord", {
       target: cdk.aws_route53.RecordTarget.fromAlias(
         new cdk.aws_route53_targets.CloudFrontTarget(distribution)

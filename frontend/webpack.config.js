@@ -32,6 +32,9 @@ const createDevelopmentConfig = (config) => {
           test: /\.tsx?$/,
           use: "ts-loader",
           exclude: /node_modules/,
+          options: {
+            transpileOnly: true,
+          },
         },
       ],
     },
@@ -40,6 +43,11 @@ const createDevelopmentConfig = (config) => {
         template: path.join(__dirname, "public", "index.html"),
       }),
     ],
+    optimization: {
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false,
+    },
   };
 };
 
